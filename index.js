@@ -9,7 +9,16 @@ const schema = makeExecutableSchema({
 })
 
 // create server
-const server = new ApolloServer({schema})
+const server = new ApolloServer({
+    schema,
+    formatError (err) {
+        if (err.message.startsWith('Usuário Existente:')) {
+            return new Error(err.message)
+        }
+
+        return err
+    }
+})
 
 // start server
 // listen default port:4000
